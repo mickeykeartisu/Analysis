@@ -7,13 +7,17 @@ import torch
 # wave file plotter class
 class WaveFilePlotter():
     """ default constructor """
-    def __init__(self, inputFilePath, outputFilePath, xlabel, ylabel, title):
+    def __init__(self, inputFilePath, outputFilePath, xlabel, ylabel, title, fontSize):
         self.__inputFilePath = inputFilePath    # input file path(.wav)
         self.__outputFilePath = outputFilePath  # output file path(.png)
         self.__xlabel = xlabel  # x axis label
         self.__ylabel = ylabel  # y axis label
         self.__title = title    # title
+        self.__fontSize = fontSize  # font size
+
+        # read data information and display properties
         self.readInforamtion()
+        self.displayProperties()
 
     # ---------- Getters ---------- #
     """ input file path getter """
@@ -70,6 +74,11 @@ class WaveFilePlotter():
     @property
     def title(self):
         return self.__title
+
+    """ font size getter """
+    @property
+    def fontSize(self):
+        return self.__fontSize
 
     # ---------- Setters ---------- #
     """ input file path setter """
@@ -145,6 +154,12 @@ class WaveFilePlotter():
             raise ValueError("title is empty.")
         self.__title = title
 
+    """ font size setter """
+    def fontSize(self, fontSize):
+        if fontSize <= 0:
+            raise ValueError("font size is smaller than 0.")
+        self.__fontSize = fontSize
+
     # ---------- Methods ---------- #
     """ read information about wave file """
     def readInforamtion(self):
@@ -160,6 +175,7 @@ class WaveFilePlotter():
     """ display information about wave file """
     def displayProperties(self):
         print(f"----------------------------------------------------------")
+        print(f"-------------------- WaveFilePlotter ---------------------")
         print(f"input file path : {self.inputFilePath}")
         print(f"output file path : {self.outputFilePath}")
         print(f"sampling frequency : {self.samplingFrequency} [Hz]")
@@ -167,11 +183,15 @@ class WaveFilePlotter():
         print(f"channel : {self.channel}")
         print(f"total sample size : {self.totalSampleSize}")
         print(f"transformed signal shape : {self.transformedSignal.shape}")
-        print(f"device : {torch.cuda.get_device_name()}\n")
+        print(f"xlabel : {self.xlabel}")
+        print(f"ylabel : {self.ylabel}")
+        print(f"title : {self.title}")
+        print(f"font size : {self.fontSize}")
+        print(f"device : {torch.cuda.get_device_name()}")
         print(f"----------------------------------------------------------\n")
     
     """ plot wave file """
-    def plotAndSaveWaveFile(self):
+    def plotAndSaveWaveForm(self):
         timeAxis = np.arange(self.totalSampleSize) / self.samplingFrequency    # time axis range
 
         # make canvas
@@ -181,9 +201,9 @@ class WaveFilePlotter():
         plt.plot(timeAxis, self.transformedSignal.to("cpu").detach().numpy().copy())
 
         # set axis label
-        plt.xlabel(self.xlabel)
-        plt.ylabel(self.ylabel)
-        plt.title(self.title)
+        plt.xlabel(self.xlabel, fontsize=18)
+        plt.ylabel(self.ylabel, fontsize=18)
+        plt.title(self.title, fontsize=18)
 
         # limit x axis range
         plt.xlim([0, self.totalSampleSize / self.samplingFrequency])
@@ -207,15 +227,13 @@ if __name__ == "__main__":
     for i in range(1, 51):
         # Generate wave file plotter object
         waveFilePlotter = WaveFilePlotter(
-            inputFilePath="./4モーラ単語リスト セット 1/4モーラ単語リスト noMask/set1_noMask_word " + str(i) + ".wav",
-            outputFilePath="./4モーラ単語リスト セット 1/4モーラ単語リスト noMask signal figure/set1_noMask_signal_figure_word " + str(i) + ".jpeg",
+            inputFilePath=f"D:/名城大学/研究室/研究/データセット/4モーラ単語リスト セット 1/4モーラ単語リスト noMask/set1_noMask_word {i}.wav",
+            outputFilePath=f"D:/名城大学/研究室/研究/データセット/4モーラ単語リスト セット 1/4モーラ単語リスト noMask figures/set1_noMask_signal_figure_word {i}.jpeg",
             xlabel="Time [s]",
-            ylabel="Value",
-            title = f"set1_noMask_word {i}"
+            ylabel="Amplitude",
+            title = f"set1_noMask_word {i}",
+            fontSize=18
         )
 
         # plot wave file and save
-        waveFilePlotter.plotAndSaveWaveFile()
-
-        # display information
-        waveFilePlotter.displayProperties()
+        waveFilePlotter.plotAndSaveWaveForm()

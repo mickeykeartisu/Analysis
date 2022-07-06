@@ -353,8 +353,9 @@ class ShortTimeFourierTransformer():
         # save figure to output file path
         plt.savefig(self.outputFilePath)
 
-        # Display canvas
-        # plt.show()
+        # close and clear memory
+        plt.clf()
+        plt.close()
 
 # to test
 if __name__ == "__main__":
@@ -363,8 +364,8 @@ if __name__ == "__main__":
         shortTimeFourierTransformer = ShortTimeFourierTransformer(
             inputFilePath="./4モーラ単語リスト セット 1/4モーラ単語リスト withMask/set1_withMask_word " + str(i) + ".wav",
             outputFilePath="./4モーラ単語リスト セット 1/4モーラ単語リスト withMask STFT figure/set1_withMask_STFT_figure_word " + str(i) + ".svg",
-            frameSize=60,
-            frameShift=1,
+            frameSize=32,
+            frameShift=8,
             title = f"With Mask Spectrogram word {i}",
             xlabel="Time [s]",
             ylabel="Frequency [Hz]"
