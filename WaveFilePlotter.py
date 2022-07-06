@@ -155,6 +155,7 @@ class WaveFilePlotter():
         self.__title = title
 
     """ font size setter """
+    @fontSize.setter
     def fontSize(self, fontSize):
         if fontSize <= 0:
             raise ValueError("font size is smaller than 0.")
@@ -180,8 +181,8 @@ class WaveFilePlotter():
         print(f"output file path : {self.outputFilePath}")
         print(f"sampling frequency : {self.samplingFrequency} [Hz]")
         print(f"quantization size : {self.quantizationSize} [Byte]")
-        print(f"channel : {self.channel}")
-        print(f"total sample size : {self.totalSampleSize}")
+        print(f"channel : {self.channel} [channel]")
+        print(f"total sample size : {self.totalSampleSize} [samples]")
         print(f"transformed signal shape : {self.transformedSignal.shape}")
         print(f"xlabel : {self.xlabel}")
         print(f"ylabel : {self.ylabel}")
@@ -190,22 +191,23 @@ class WaveFilePlotter():
         print(f"device : {torch.cuda.get_device_name()}")
         print(f"----------------------------------------------------------\n")
     
-    """ plot wave file """
+    """ plot wave form """
     def plotAndSaveWaveForm(self):
         timeAxis = np.arange(self.totalSampleSize) / self.samplingFrequency    # time axis range
 
-        # make canvas
+        # make canvas and set font size
         plt.figure(figsize=(16, 13))
+        plt.rcParams["font.size"] = self.fontSize
 
         # plot signal
         plt.plot(timeAxis, self.transformedSignal.to("cpu").detach().numpy().copy())
 
         # set axis label
-        plt.xlabel(self.xlabel, fontsize=18)
-        plt.ylabel(self.ylabel, fontsize=18)
-        plt.title(self.title, fontsize=18)
+        plt.xlabel(self.xlabel)
+        plt.ylabel(self.ylabel)
+        plt.title(self.title)
 
-        # limit x axis range
+        # limit x and y axis range
         plt.xlim([0, self.totalSampleSize / self.samplingFrequency])
         plt.ylim([-2 ** 30, 2 ** 30])
 
@@ -225,14 +227,53 @@ class WaveFilePlotter():
 # do test
 if __name__ == "__main__":
     for i in range(1, 51):
-        # Generate wave file plotter object
+        # Generate wave file plotter object (noMask.svg)
         waveFilePlotter = WaveFilePlotter(
-            inputFilePath=f"D:/名城大学/研究室/研究/データセット/4モーラ単語リスト セット 1/4モーラ単語リスト noMask/set1_noMask_word {i}.wav",
-            outputFilePath=f"D:/名城大学/研究室/研究/データセット/4モーラ単語リスト セット 1/4モーラ単語リスト noMask figures/set1_noMask_signal_figure_word {i}.jpeg",
+            inputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト noMask/set1_noMask_word {i}.wav",
+            outputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト noMask signal figure/set1_noMask_signal_figure_word {i}.svg",
             xlabel="Time [s]",
             ylabel="Amplitude",
             title = f"set1_noMask_word {i}",
-            fontSize=18
+            fontSize=20
+        )
+
+        # plot wave file and save
+        waveFilePlotter.plotAndSaveWaveForm()
+
+        # Generate wave file plotter object (witMask.svg)
+        waveFilePlotter = WaveFilePlotter(
+            inputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト withMask/set1_withMask_word {i}.wav",
+            outputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト withMask signal figure/set1_withMask_signal_figure_word {i}.svg",
+            xlabel="Time [s]",
+            ylabel="Amplitude",
+            title = f"set1_noMask_word {i}",
+            fontSize=20
+        )
+
+        # plot wave file and save
+        waveFilePlotter.plotAndSaveWaveForm()
+
+        # Generate wave file plotter object (noMask.jpeg)
+        waveFilePlotter = WaveFilePlotter(
+            inputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト noMask/set1_noMask_word {i}.wav",
+            outputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト noMask signal figure/set1_noMask_signal_figure_word {i}.jpeg",
+            xlabel="Time [s]",
+            ylabel="Amplitude",
+            title = f"set1_noMask_word {i}",
+            fontSize=20
+        )
+
+        # plot wave file and save
+        waveFilePlotter.plotAndSaveWaveForm()
+
+        # Generate wave file plotter object (witMask.jpeg)
+        waveFilePlotter = WaveFilePlotter(
+            inputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト withMask/set1_withMask_word {i}.wav",
+            outputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト withMask signal figure/set1_withMask_signal_figure_word {i}.jpeg",
+            xlabel="Time [s]",
+            ylabel="Amplitude",
+            title = f"set1_noMask_word {i}",
+            fontSize=20
         )
 
         # plot wave file and save
