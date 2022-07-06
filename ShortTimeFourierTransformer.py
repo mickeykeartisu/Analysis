@@ -13,7 +13,7 @@ class ShortTimeFourierTransformer():
         self.__outputFilePath = outputFilePath  # output file path(.png)
         self.__frameSize = frameSize    # frame size [ms]
         self.__frameShift = frameShift  # frame shift [ms]
-        self.__fftSize = 2**16  # FFT size (dimension)
+        self.__fftSize = 2**10  # FFT size (dimension)
         self.__xlabel = xlabel  # x axis label
         self.__ylabel = ylabel  # y axis label
         self.__title = title    # figure title
@@ -26,6 +26,9 @@ class ShortTimeFourierTransformer():
         self.initializeSpectrogram()
         self.calculateSpectrogram()
         self.calculateAmplitudedSpectrogram()
+
+        # display information
+        self.displayInformation()
 
     # ---------- Getters ---------- #
     """ input file path getter """
@@ -240,6 +243,7 @@ class ShortTimeFourierTransformer():
     """ display information about wave file """
     def displayInformation(self):
         print(f"--------------------------------------------------")
+        print(f"----------- ShortTimeFourierTransformer ----------")
         print(f"input file path : {self.inputFilePath}")
         print(f"output file path : {self.outputFilePath}")
         print(f"sampling frequency : {self.samplingFrequency} [Hz]")
@@ -342,7 +346,7 @@ class ShortTimeFourierTransformer():
 
         # Set axes detail No Mask
         axes.set_title(self.title) # axes title
-        axes.set_xlim(1.7, 2.7) # X axis range
+        axes.set_xlim(1.6, 2.65) # X axis range
         axes.set_ylim(0, 20000) # Y axis range
         axes.set_xlabel(self.xlabel) # X axis label
         axes.set_ylabel(self.ylabel) # Y axis label
@@ -359,11 +363,11 @@ class ShortTimeFourierTransformer():
 
 # to test
 if __name__ == "__main__":
-    for i in range(46, 51):
+    for i in range(1, 51):
         # Generate wave file plotter object
         shortTimeFourierTransformer = ShortTimeFourierTransformer(
-            inputFilePath="./4モーラ単語リスト セット 1/4モーラ単語リスト withMask/set1_withMask_word " + str(i) + ".wav",
-            outputFilePath="./4モーラ単語リスト セット 1/4モーラ単語リスト withMask STFT figure/set1_withMask_STFT_figure_word " + str(i) + ".svg",
+            inputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト withMask/set1_withMask_word {i}.wav",
+            outputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト withMask STFT figure/set1_withMask_STFT_figure_word {i}.svg",
             frameSize=32,
             frameShift=8,
             title = f"With Mask Spectrogram word {i}",
@@ -372,19 +376,44 @@ if __name__ == "__main__":
         )
 
         # plot wave file and save
-        shortTimeFourierTransformer.displayInformation()
+        shortTimeFourierTransformer.displaySpectrogram()
+
+        # Generate wave file plotter object
+        shortTimeFourierTransformer = ShortTimeFourierTransformer(
+            inputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト withMask/set1_withMask_word {i}.wav",
+            outputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト withMask STFT figure/set1_withMask_STFT_figure_word {i}.jpeg",
+            frameSize=32,
+            frameShift=8,
+            title = f"With Mask Spectrogram word {i}",
+            xlabel="Time [s]",
+            ylabel="Frequency [Hz]"
+        )
+
+        # plot wave file and save
         shortTimeFourierTransformer.displaySpectrogram()
 
         shortTimeFourierTransformer = ShortTimeFourierTransformer(
-            inputFilePath="./4モーラ単語リスト セット 1/4モーラ単語リスト noMask/set1_noMask_word " + str(i) + ".wav",
-            outputFilePath="./4モーラ単語リスト セット 1/4モーラ単語リスト noMask STFT figure/set1_noMask_STFT_figure_word " + str(i) + ".svg",
-            frameSize=60,
-            frameShift=1,
+            inputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト noMask/set1_noMask_word {i}.wav",
+            outputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト noMask STFT figure/set1_noMask_STFT_figure_word {i}.svg",
+            frameSize=32,
+            frameShift=8,
             title = f"No Mask Spectrogram word {i}",
             xlabel="Time [s]",
             ylabel="Frequency [Hz]"
         )
 
         # plot wave file and save
-        shortTimeFourierTransformer.displayInformation()
+        shortTimeFourierTransformer.displaySpectrogram()
+
+        shortTimeFourierTransformer = ShortTimeFourierTransformer(
+            inputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト noMask/set1_noMask_word {i}.wav",
+            outputFilePath=f"D:/名城大学/研究室/ゼミ/4モーラ単語リスト セット 1/4モーラ単語リスト noMask STFT figure/set1_noMask_STFT_figure_word {i}.jpeg",
+            frameSize=32,
+            frameShift=8,
+            title = f"No Mask Spectrogram word {i}",
+            xlabel="Time [s]",
+            ylabel="Frequency [Hz]"
+        )
+
+        # plot wave file and save
         shortTimeFourierTransformer.displaySpectrogram()
